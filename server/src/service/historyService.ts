@@ -1,7 +1,16 @@
+import fs from 'fs/promises';
+import path from 'path';
+
 // TODO: Define a City class with name and id properties
+class City {
+  constructor(public name: string, public id: string) {
+
+  }
+}
 
 // TODO: Complete the HistoryService class
 class HistoryService {
+
   // TODO: Define a read method that reads from the searchHistory.json file
   // private async read() {}
   // TODO: Define a write method that writes the updated cities array to the searchHistory.json file
