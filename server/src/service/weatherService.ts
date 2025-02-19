@@ -16,14 +16,14 @@ class Weather implements Coordinates {
     public readonly humidity: number,
     public readonly windSpeed: number,
     public readonly windDirection: number,
-    public readonly description: string,
+    public readonly iconDescription: string,
     public readonly icon: string,
     public readonly lat: number,
     public readonly lon: number
   ) { }
 
   static fromApiResponse(data: any): Weather {
-    return new Weather(
+    return new Weather( // making new weather class
       data.dt_txt || new Date().toISOString(),
       data.main?.temp || 0,
       data.main?.feels_like || 0,
@@ -45,7 +45,7 @@ class Weather implements Coordinates {
       humidity: this.humidity,
       windSpeed: this.windSpeed,
       windDirection: this.windDirection,
-      description: this.description,
+      description: this.iconDescription,
       icon: this.icon,
       lat: this.lat,
       lon: this.lon,
@@ -137,8 +137,8 @@ class WeatherService {
 
   // TODO: Complete buildForecastArray method
   private buildForecastArray(currentWeather: Weather, weatherData: any[]) {
-    console.log("Current: ", currentWeather);
-    console.log("Weather Data: ", weatherData);
+    // console.log("Current: ", currentWeather);
+    // console.log("Weather Data: ", weatherData);
     const forecasts = weatherData[0].list;
 
     const forecastArray: Weather[] = forecasts.map((item: any) => {
@@ -147,7 +147,7 @@ class WeatherService {
         throw new Error('Invalid weather data');
       }
       // destructure needed props
-      console.log("Item: ", item);
+      // console.log("Item: ", item);
       const { main, weather, wind, dt } = item;
 
       // create new Weather object for each forecast item
@@ -164,14 +164,14 @@ class WeatherService {
         currentWeather.lon
       );
 
-      console.log("Obj: ", temp);
+      // console.log("Obj: ", temp);
       return temp;
     });
     // remove 1st item & replace with current 
-    console.log("forecast array: ", forecastArray);
+    // console.log("forecast array: ", forecastArray);
     forecastArray.shift();
     forecastArray.unshift(currentWeather);
-    console.log("forecast array after: ", forecastArray);
+    // console.log("forecast array after: ", forecastArray);
     return forecastArray;
   }
 
