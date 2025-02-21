@@ -16,7 +16,7 @@ class Weather implements Coordinates {
     public readonly humidity: number,
     public readonly windSpeed: number,
     public readonly windDirection: number,
-    public readonly iconDescription: string,
+    public readonly description: string,
     public readonly icon: string,
     public readonly lat: number,
     public readonly lon: number
@@ -45,7 +45,7 @@ class Weather implements Coordinates {
       humidity: this.humidity,
       windSpeed: this.windSpeed,
       windDirection: this.windDirection,
-      description: this.iconDescription,
+      description: this.description,
       icon: this.icon,
       lat: this.lat,
       lon: this.lon,
@@ -119,8 +119,8 @@ class WeatherService {
 
   // TODO: Build parseCurrentWeather method
   private parseCurrentWeather(response: any) {
-    const { list } = response;
-    const { main, weather, wind, dt } = list[0];
+    const { list } = response; // Destructures 'list' from the response
+    const { main, weather, wind, dt } = list[0];  // Gets weather data from first item in list
     return new Weather(
       new Date(dt * 1000).toLocaleDateString(),
       main.temp,

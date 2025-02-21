@@ -27,6 +27,9 @@ const windEl: HTMLParagraphElement = document.getElementById(
 const humidityEl: HTMLParagraphElement = document.getElementById(
   'humidity'
 ) as HTMLParagraphElement;
+const iconDescriptionEl: HTMLParagraphElement = document.getElementById(
+  'description'
+  ) as HTMLParagraphElement;
 
 /*
 
@@ -48,7 +51,7 @@ const fetchWeather = async (cityName: string) => {
 
  console.log('weatherData: ', weatherData);
 
-  renderCurrentWeather(weatherData[0], cityName);
+  renderCurrentWeather(weatherData[0], cityName,);
   renderForecast(weatherData.slice(1));
 };
 
@@ -59,7 +62,7 @@ const fetchSearchHistory = async () => {
       'Content-Type': 'application/json',
     },
   });
-  return history;
+  return history.json();
 };
 
 const deleteCityFromHistory = async (id: string) => {
@@ -70,7 +73,6 @@ const deleteCityFromHistory = async (id: string) => {
     },
   });
 };
-
 /*
 
 Render Functions
@@ -78,25 +80,34 @@ Render Functions
 */
 
 const renderCurrentWeather = (currentWeather: any, cityName: string): void => {
-  const { city, date, icon, iconDescription, temp, windSpeed, humidity } =
+  console.log(cityName);
+  const { date, icon, description, temp, windSpeed, humidity } =
     currentWeather;
 
   // convert the following to typescript
   heading.textContent = `${cityName} (${date})`;
   weatherIcon.setAttribute(
     'src',
-    `https://openweathermap.org/img/w/${icon}.png`
+    `https://openweathermap.org/img/wn/${icon}@2x.png`
   );
-  weatherIcon.setAttribute('alt', iconDescription);
+  
+  // if (iconDescriptionEl) {
+  //   iconDescriptionEl.textContent = description ?? 'Weather condition unavailable';
+  // }
+  weatherIcon.setAttribute('alt', description);
   weatherIcon.setAttribute('class', 'weather-img');
   heading.append(weatherIcon);
+  
+  // iconDescriptionEl.textContent = `${description}`;
+  // iconDescriptionEl.setAttribute('class', 'description');
+
   tempEl.textContent = `Temp: ${temp}°F`;
   windEl.textContent = `Wind: ${windSpeed} MPH`;
   humidityEl.textContent = `Humidity: ${humidity} %`;
 
   if (todayContainer) {
     todayContainer.innerHTML = '';
-    todayContainer.append(heading, tempEl, windEl, humidityEl);
+    todayContainer.append(heading, iconDescriptionEl, tempEl, windEl, humidityEl);
   }
 };
 
@@ -113,7 +124,7 @@ const renderForecast = (forecast: any): void => {
     forecastContainer.append(headingCol);
   }
 
-  for (let i = 3; i < forecast.length; i++) {
+  for (let i = 0; i < forecast.length; i++) {
     renderForecastCard(forecast[i]);
     i = i + 7;
   }
@@ -132,6 +143,7 @@ const renderForecastCard = (forecast: any) => {
     `https://openweathermap.org/img/wn/${icon}@2x.png`
   );
   weatherIcon.setAttribute('alt', iconDescription);
+  
   tempEl.textContent = `Temp: ${temp} °F`;
   windEl.textContent = `Wind: ${windSpeed} MPH`;
   humidityEl.textContent = `Humidity: ${humidity} %`;
@@ -141,8 +153,10 @@ const renderForecastCard = (forecast: any) => {
   }
 };
 
-const renderSearchHistory = async (searchHistory: any) => {
-  const historyList = await searchHistory.json();
+const renderSearchHistory = async (fetchSearchHistory: any) => {
+  const historyList = await fetchSearchHistory;
+  console.log('historyList: ', historyList);
+  console.log('fisrt history item', historyList[0]);
 
   if (searchHistoryContainer) {
     searchHistoryContainer.innerHTML = '';
@@ -175,10 +189,11 @@ const createForecastCard = () => {
   const tempEl = document.createElement('p');
   const windEl = document.createElement('p');
   const humidityEl = document.createElement('p');
+  const iconDescriptionEl = document.createElement('p');
 
   col.append(card);
   card.append(cardBody);
-  cardBody.append(cardTitle, weatherIcon, tempEl, windEl, humidityEl);
+  cardBody.append(cardTitle, weatherIcon, iconDescriptionEl, tempEl, windEl, humidityEl);
 
   col.classList.add('col-auto');
   card.classList.add(
@@ -193,6 +208,7 @@ const createForecastCard = () => {
   tempEl.classList.add('card-text');
   windEl.classList.add('card-text');
   humidityEl.classList.add('card-text');
+  iconDescriptionEl.classList.add('card-text');
 
   return {
     col,
@@ -201,15 +217,18 @@ const createForecastCard = () => {
     tempEl,
     windEl,
     humidityEl,
+    iconDescriptionEl,
   };
 };
 
-const createHistoryButton = (city: string) => {
+const createHistoryButton = (city: {name: string, id: string}) => {
   const btn = document.createElement('button');
   btn.setAttribute('type', 'button');
   btn.setAttribute('aria-controls', 'today forecast');
   btn.classList.add('history-btn', 'btn', 'btn-secondary', 'col-10');
-  btn.textContent = city;
+  btn.textContent = city.name;
+
+  btn.dataset.city = JSON.stringify(city);
 
   return btn;
 };
@@ -237,7 +256,8 @@ const createHistoryDiv = () => {
 };
 
 const buildHistoryListItem = (city: any) => {
-  const newBtn = createHistoryButton(city.name);
+  const newBtn = createHistoryButton(city);
+  console.log(city);
   const deleteBtn = createDeleteButton();
   deleteBtn.dataset.city = JSON.stringify(city);
   const historyDiv = createHistoryDiv();
@@ -267,8 +287,8 @@ const handleSearchFormSubmit = (event: any): void => {
 
 const handleSearchHistoryClick = (event: any) => {
   if (event.target.matches('.history-btn')) {
-    const city = event.target.textContent;
-    fetchWeather(city).then(getAndRenderHistory);
+    const cityData = JSON.parse(event.target.dataset.city); 
+    fetchWeather(cityData.name).then(getAndRenderHistory);
   }
 };
 
