@@ -118,17 +118,37 @@ export class HistoryService {
   }
 
   // * BONUS TODO: Define a removeCity method that removes a city from the searchHistory.json file
-  async removeCity(id: number) {
+  async removeCity(id: string | number): Promise<{ success: boolean; message: string; cities: City[] }> {
     try {
-      const stringId = id.toString(); // convert id to string
-      this.cities = this.cities.filter((city: City) => city.id !== stringId); // filter out city with id
+      const stringId = typeof id === 'number' ? id.toString() : id; // convert id to string
+      // check if city exists
+      const cityToRemove = this.cities.find(city => city.id === stringId);
+      if (!cityToRemove) {
+        return {
+          success: false,
+          message: 'City not found',
+          cities: this.cities
+        };
+      }
+      // filter out city by id
+      this.cities = this.cities.filter((city: City) => city.id !== stringId);
       await this.write(this.cities); // write updated cities back to file
-      return true; // if successful
+
+      return {
+        success: true,
+        message: `City ${cityToRemove.name} removed`,
+        cities: this.cities // if successful
+      };
+
     } catch (error) {
       console.error('Error removing city:', error);
-      throw new Error('Failed to remove city');
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to remove city',
+        cities: this.cities
+      };
     }
   }
-}
+};
 
 export default new HistoryService();

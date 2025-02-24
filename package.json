@@ -5,16 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/server.js",
+    "start": "cd server && npm start",
     "start:dev": "concurrently \"npm run server:dev\" \"wait-on tcp:3001 && npm run client:dev\"",
     "server": "cd server && npm start",
     "server:dev": "cd server && npm run dev",
-    "install": "cd server && npm i && cd ../client && npm i",
+    "install": "cd server && npm install && cd ../client && npm install",
     "client:build": "cd client && npm run build",
     "client:dev": "cd client && npm run dev",
-    "build": "tsc",
-    "dev": "nodemon src/server.ts",
-    "render-build": "npm install && npm run build"
+    "build": "cd client && npm run build && cd ../server && npm run build",
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\"",
+    "render-build": "npm install && cd client && npm install && npm run build && cd ../server && npm install && npm run build"
   },
   "keywords": [],
   "author": "",

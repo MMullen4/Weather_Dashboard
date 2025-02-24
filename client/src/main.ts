@@ -27,9 +27,9 @@ const windEl: HTMLParagraphElement = document.getElementById(
 const humidityEl: HTMLParagraphElement = document.getElementById(
   'humidity'
 ) as HTMLParagraphElement;
-const iconDescriptionEl: HTMLParagraphElement = document.getElementById(
-  'description'
-  ) as HTMLParagraphElement;
+// const iconDescriptionEl: HTMLParagraphElement = document.getElementById(
+//   'description'
+//   ) as HTMLParagraphElement;
 
 /*
 
@@ -49,7 +49,7 @@ const fetchWeather = async (cityName: string) => {
 
   const weatherData = await response.json();
 
- console.log('weatherData: ', weatherData);
+  console.log('weatherData: ', weatherData);
 
   renderCurrentWeather(weatherData[0], cityName,);
   renderForecast(weatherData.slice(1));
@@ -66,6 +66,7 @@ const fetchSearchHistory = async () => {
 };
 
 const deleteCityFromHistory = async (id: string) => {
+  console.log('id: ', id);
   await fetch(`/api/weather/history/${id}`, {
     method: 'DELETE',
     headers: {
@@ -90,14 +91,14 @@ const renderCurrentWeather = (currentWeather: any, cityName: string): void => {
     'src',
     `https://openweathermap.org/img/wn/${icon}@2x.png`
   );
-  
+
   // if (iconDescriptionEl) {
   //   iconDescriptionEl.textContent = description ?? 'Weather condition unavailable';
   // }
   weatherIcon.setAttribute('alt', description);
   weatherIcon.setAttribute('class', 'weather-img');
   heading.append(weatherIcon);
-  
+
   // iconDescriptionEl.textContent = `${description}`;
   // iconDescriptionEl.setAttribute('class', 'description');
 
@@ -143,7 +144,7 @@ const renderForecastCard = (forecast: any) => {
     `https://openweathermap.org/img/wn/${icon}@2x.png`
   );
   weatherIcon.setAttribute('alt', iconDescription);
-  
+
   tempEl.textContent = `Temp: ${temp} °F`;
   windEl.textContent = `Wind: ${windSpeed} MPH`;
   humidityEl.textContent = `Humidity: ${humidity} %`;
@@ -221,7 +222,7 @@ const createForecastCard = () => {
   };
 };
 
-const createHistoryButton = (city: {name: string, id: string}) => {
+const createHistoryButton = (city: { name: string, id: string }) => {
   const btn = document.createElement('button');
   btn.setAttribute('type', 'button');
   btn.setAttribute('aria-controls', 'today forecast');
@@ -287,7 +288,7 @@ const handleSearchFormSubmit = (event: any): void => {
 
 const handleSearchHistoryClick = (event: any) => {
   if (event.target.matches('.history-btn')) {
-    const cityData = JSON.parse(event.target.dataset.city); 
+    const cityData = JSON.parse(event.target.dataset.city);
     fetchWeather(cityData.name).then(getAndRenderHistory);
   }
 };
