@@ -50,39 +50,6 @@ router.get('/history', async (_req: Request, _res: Response) => {
 });
 
 // * BONUS TODO: DELETE city from search history
-// router.delete('/history/:id', async (req, res) => {
-//   try {
-//     const cityId = parseInt(req.params.id);
-
-//     if (isNaN(cityId)) {
-//       return res.status(400).json({ error: 'Invalid ID format' });
-//     }
-
-//     // Get current history
-//     const history = await HistoryService.getSearchHistory();
-
-//     // Find the index of the city to remove
-//     const cityIndex = history.findIndex((item, index) => index === cityId);
-
-//     if (cityIndex === -1) {
-//       return res.status(404).json({ error: 'City not found in history' });
-//     }
-
-//     // Remove the city from history array
-//     const updatedHistory = history.filter((_, index) => index !== cityId);
-
-//     // Update the history
-//     HistoryService.searchHistory = updatedHistory;
-
-//     return res.json({
-//       message: 'City removed from history successfully',
-//       removedIndex: cityId
-//     });
-//   } catch (error) {
-//     console.error('Error deleting city:', error);
-//     return res.status(500).json({ error: 'Failed to delete city from history' });
-//   }
-// });
 
 // router.delete('/history/:id', async (req, res) => {
 //   // create a delete endpoint; :id is URL that captures the ID of the city
