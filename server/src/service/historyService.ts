@@ -10,13 +10,20 @@ class City {
 }
 
 // TODO: Complete the HistoryService class
-class HistoryService {
+export class HistoryService {
   cities: City[] = [];
   filePath: string; //path to store city seach history
 
-  constructor(filePath: string = 'searchHistory.json') {
-    this.filePath = path.resolve(__dirname, '..', filePath);
-    this.initializeFile();
+  constructor() {
+    this.filePath = path.join(process.cwd(), 'data', 'searchHistory.json');
+    this.initialize();
+  }
+
+  public async initialize() {
+    await this.initializeFile();
+    const data = await this.read(); // load inital data
+    this.cities = await this.read();
+    this.cities = data || [];
   }
 
   private async initializeFile() {
@@ -30,12 +37,6 @@ class HistoryService {
       } catch {
         console.error('File does not exist, creating new file...');
         await fs.writeFile(this.filePath, JSON.stringify([], null, 2));
-      }
-      const fileExists = await fs.access(this.filePath)
-        .then(() => true)
-        .catch(() => false);
-      if (!fileExists) {
-        throw new Error('Failed to create history file');
       }
     } catch (error) {
       console.error('Error initializing file:', error);
@@ -100,10 +101,9 @@ class HistoryService {
       throw new Error('City already exists');
     }
 
-    console.log('adding city', city);
-
     const newCity = new City(city, (this.cities.length + 1).toString());
     this.cities.push(newCity);
+    console.log('adding city', city);
     await this.write(this.cities);
     return this.cities;
   }
