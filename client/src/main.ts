@@ -107,7 +107,7 @@ const renderCurrentWeather = (currentWeather: any, cityName: string): void => {
 
   if (todayContainer) {
     todayContainer.innerHTML = '';
-    todayContainer.append(heading, iconDescriptionEl, tempEl, windEl, humidityEl);
+    todayContainer.append(heading, tempEl, windEl, humidityEl);
   }
 };
 

@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-// import path from 'path';
+import path from 'path';
 
 // // TODO: Define a City class with name and id properties
 class City {
@@ -12,10 +12,35 @@ class City {
 // TODO: Complete the HistoryService class
 class HistoryService {
   cities: City[] = [];
-  filePath: string = 'searchHistory.json'; //path to store city seach history
+  filePath: string; //path to store city seach history
 
-  constructor(filePath: string = 'seachHistory.json') {
-    this.filePath = filePath;
+  constructor(filePath: string = 'searchHistory.json') {
+    this.filePath = path.resolve(__dirname, '..', filePath);
+    this.initializeFile();
+  }
+
+  private async initializeFile() {
+    try {
+      const dir = path.dirname(this.filePath);
+      await fs.mkdir(dir, { recursive: true });
+
+      try {
+        await fs.access(this.filePath);
+        console.log('File exists, reading data...');
+      } catch {
+        console.error('File does not exist, creating new file...');
+        await fs.writeFile(this.filePath, JSON.stringify([], null, 2));
+      }
+      const fileExists = await fs.access(this.filePath)
+        .then(() => true)
+        .catch(() => false);
+      if (!fileExists) {
+        throw new Error('Failed to create history file');
+      }
+    } catch (error) {
+      console.error('Error initializing file:', error);
+      throw error;
+    }
   }
 
   // TODO: Define a read method that reads from the searchHistory.json file
@@ -23,12 +48,21 @@ class HistoryService {
     console.log('reading from file:', this.filePath)
     try {
       const data = await fs.readFile(this.filePath, 'utf-8');
+      // in case of empty file
+      if (!data.trim()) {
+        this.cities = [];
+        return this.cities;
+      }
       this.cities = JSON.parse(data);
       return this.cities;
     } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+        this.cities = [];
+        await this.write(this.cities);
+        return this.cities;
+      }
       console.error('Error reading file:', error);
-      this.cities = [];
-      return this.cities;
+      throw error;
     }
   }
 
@@ -38,13 +72,16 @@ class HistoryService {
     console.log('cities to write', cities);
 
     try {
+      const dir = path.dirname(this.filePath);
+      await fs.mkdir(dir, { recursive: true });
+
+      // write to file
       await fs.writeFile(this.filePath, JSON.stringify(cities, null, 2));
       this.cities = cities; //updates internal state
       return this.cities;
     } catch (error) {
       console.error('Error writing to file:', error);
       throw error;
-
     }
   }
 

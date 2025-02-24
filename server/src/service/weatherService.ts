@@ -101,9 +101,7 @@ class WeatherService {
     try {
       const query = this.buildGeocodeQuery();
       const { lat, lon } = await this.fetchLocationData(query);
-     // console.log("Coords: ", lat, lon)
-      return this.destructureLocationData({ lat, lon });
-      // return { lat, lon };
+        return this.destructureLocationData({ lat, lon });
     } catch (error) {
       console.error('Error fetching location data', error);
       throw error;
