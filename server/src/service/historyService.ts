@@ -93,19 +93,28 @@ export class HistoryService {
   }
   // TODO Define an addCity method that adds a city to the searchHistory.json file
   async addCity(city: string) {
-    if (!city?.trim) {
+    if (!city?.trim()) {
       throw new Error('Invalid city name');
     }
     const normalizedCity = city.toLocaleLowerCase().trim();
+
     if (this.cities.some((existingCity: City) => existingCity.name.toLocaleLowerCase() === normalizedCity)) {
-      throw new Error('City already exists');
+      return {
+        success: false,
+        message: 'City already exists',
+        cities: this.cities
+      };
     }
 
     const newCity = new City(city, (this.cities.length + 1).toString());
     this.cities.push(newCity);
     console.log('adding city', city);
     await this.write(this.cities);
-    return this.cities;
+    return {
+      success: true,
+      message: 'City added successfully',
+      cities: this.cities
+    };
   }
 
   // * BONUS TODO: Define a removeCity method that removes a city from the searchHistory.json file

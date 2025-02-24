@@ -18,5 +18,25 @@
   {
     "name": "Los Angeles",
     "id": "5"
+  },
+  {
+    "name": "Miami",
+    "id": "6"
+  },
+  {
+    "name": "Portland",
+    "id": "7"
+  },
+  {
+    "name": "Hermosa Beach",
+    "id": "8"
+  },
+  {
+    "name": "SanDiego",
+    "id": "9"
+  },
+  {
+    "name": "New York",
+    "id": "10"
   }
 ]
