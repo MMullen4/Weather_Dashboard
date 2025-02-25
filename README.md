@@ -1,9 +1,9 @@
 # Weather_Dashboard
-This site is a weather dashboard with form inputs.  Searching for a city will present current and future (5 day) conditions for that city and that city will be added to the search history.  Clicking on a city in the search history will present current and future conditions for that city again.
+This site is a weather dashboard with form inputs.  Searching for a city will present current and future (5 day) conditions for that city and that city will be added to the search history.  Clicking on a city in the search history will present current and future conditions for that city again. Users may delete cites from the history by clicking the delete icon.  
 
 ## Visuals
 Icons for weather conditions are included for current and future dates.
-
+https://weather-dashboard-sm9k.onrender.com/
 
 ## Installation
 NA.  Application runs staright from the front end.
