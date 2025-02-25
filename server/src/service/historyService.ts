@@ -88,9 +88,10 @@ export class HistoryService {
 
   // TODO: Define a getCities method that reads the cities from the searchHistory.json file and returns them as an array of City objects
   async getCities() {
-    const data = await this.read();
+    const data = await this.read(); // reads data from searchhistory
     return data.map((city: City) => new City(city.name, city.id));
   }
+
   // TODO Define an addCity method that adds a city to the searchHistory.json file
   async addCity(city: string) {
     if (!city?.trim()) {
@@ -107,7 +108,7 @@ export class HistoryService {
     }
 
     const newCity = new City(city, (this.cities.length + 1).toString());
-    this.cities.push(newCity);
+    this.cities.push(newCity); // 
     console.log('adding city', city);
     await this.write(this.cities);
     return {
@@ -118,37 +119,11 @@ export class HistoryService {
   }
 
   // * BONUS TODO: Define a removeCity method that removes a city from the searchHistory.json file
-  async removeCity(id: string | number): Promise<{ success: boolean; message: string; cities: City[] }> {
-    try {
-      const stringId = typeof id === 'number' ? id.toString() : id; // convert id to string
-      // check if city exists
-      const cityToRemove = this.cities.find(city => city.id === stringId);
-      if (!cityToRemove) {
-        return {
-          success: false,
-          message: 'City not found',
-          cities: this.cities
-        };
-      }
-      // filter out city by id
-      this.cities = this.cities.filter((city: City) => city.id !== stringId);
-      await this.write(this.cities); // write updated cities back to file
-
-      return {
-        success: true,
-        message: `City ${cityToRemove.name} removed`,
-        cities: this.cities // if successful
-      };
-
-    } catch (error) {
-      console.error('Error removing city:', error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : 'Failed to remove city',
-        cities: this.cities
-      };
-    }
+  async removeCity(id: string) {
+    return await this.getCities()
+      .then((cities) => cities.filter((city) => city.id != id))
+      .then(data => this.write(data))
   }
-};
+} 
 
 export default new HistoryService();

@@ -138,14 +138,17 @@ class WeatherService {
     // console.log("Current: ", currentWeather);
     // console.log("Weather Data: ", weatherData);
     const forecasts = weatherData[0].list;
-
+    console.log("Forecasts: ", forecasts);
+    // let filterForecast = forecasts.filter(item => item.dt_txt.includes('12:00:00'))
+    // console.log("Filtered Forecasts: ", filterForecast);
+    
     const forecastArray: Weather[] = forecasts.map((item: any) => {
       // validate required props exist
       if (!item?.dt || !item?.main || !item?.weather || !item?.wind) {
         throw new Error('Invalid weather data');
       }
       // destructure needed props
-      // console.log("Item: ", item);
+      
       const { main, weather, wind, dt } = item;
 
       // create new Weather object for each forecast item
@@ -179,7 +182,7 @@ class WeatherService {
       this.cityName = city; // stores city name in the class instance
       const coordinates = await this.fetchAndDestructureLocationData(); // get geo coords for the city
       const weatherData = await this.fetchWeatherData(coordinates); // uses the coords to fetch data
-      //console.log("Forecast Data: ", weatherData)
+      console.log("Forecast Data: ", weatherData)
       const currentWeather = this.parseCurrentWeather(weatherData); // processes raw weather data
       //console.log("Current Data: ", currentWeather)
       

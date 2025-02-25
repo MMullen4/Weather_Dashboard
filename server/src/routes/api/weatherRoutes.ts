@@ -18,8 +18,6 @@ router.post('/', async (req: Request, res: Response) => {
 
     // TODO: GET weather data from city name
 
-    // console.log("Data: ", weatherData)
-
     // TODO: save city to search history
     await HistoryService.addCity(city);
     return res.json(weatherData);
@@ -43,28 +41,17 @@ router.get('/history', async (_req: Request, res: Response) => {
 });
 
 // * BONUS TODO: DELETE city from search history
-// router.delete('/history/:id', async (req, res) => {
-//   // create a delete endpoint; :id is URL that captures the ID of the city
-//   try {
-//     const id = req.params.id;
-//     if (!id) {
-//       return res.status(400).json({ error: 'City ID is required' });
-//     }
+router.delete('/history/:id', async (req, res) => {
+  // create a delete endpoint; :id is URL that captures the ID of the city
+  try {
+    const id = req.params.id;
+    await HistoryService.removeCity(id);
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete city from search history' });
+  }
+  // call the removeCity method from the HistoryService and pass the ID
+});
 
-//     const deleteCity = await City.removeCity({
-//       where: {
-//         id: id
-//       }
-//     });
-
-//     if (!deleteCity) {
-//       return res.status(404).json({ error: 'City not found' });
-//     }
-//     res.json(deleteCity);
-//   } catch (error) {
-//     console.error('Error deleting city', error);
-//     res.status(500).json(error); // reports errors to front end
-//   }
-// });
 
 export default router;

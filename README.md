@@ -1,2 +1,25 @@
 # Weather_Dashboard
-A weather dashboard application that calls the OpenWeather API and renders data in the browser.
+This site is a weather dashboard with form inputs.  Searching for a city will present current and future (5 day) conditions for that city and that city will be added to the search history.  Clicking on a city in the search history will present current and future conditions for that city again.
+
+## Visuals
+Icons for weather conditions are included for current and future dates.
+
+
+## Installation
+NA.  Application runs staright from the front end.
+
+## Usage
+User inputs a city name and clicks submit.  Current weather in the city displays with a representative icon.  A 5 day weather forcast displays below.  User's cities are saved and can be revisited by clicking the city name in the history list.
+
+## Support
+PLease reach out to me with any questions -
+matt@mmcprintpackaging.com
+
+## Contributing
+Open to suggestions.
+
+## Authors and acknowledgment
+Myself, FSF TA's and Tutors. 
+
+## License
+N/A
