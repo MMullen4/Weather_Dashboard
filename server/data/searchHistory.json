@@ -4,11 +4,23 @@
     "id": "1"
   },
   {
-    "name": "New York",
+    "name": "Fresno",
+    "id": "5"
+  },
+  {
+    "name": "SAn Diego",
+    "id": "3"
+  },
+  {
+    "name": "Denver",
     "id": "4"
   },
   {
-    "name": "Fresno",
+    "name": "Houston",
     "id": "5"
+  },
+  {
+    "name": "Miami",
+    "id": "6"
   }
 ]

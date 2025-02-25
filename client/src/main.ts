@@ -127,7 +127,7 @@ const renderForecast = (forecast: any): void => {
 
   for (let i = 0; i < forecast.length; i++) {
     renderForecastCard(forecast[i]);
-    i = i + 7;
+    // i = i + 7;
   }
 };
 
