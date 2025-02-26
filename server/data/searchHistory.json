@@ -1,26 +1,22 @@
 [
   {
-    "name": "Chicago",
+    "name": "San Diego",
     "id": "1"
-  },
-  {
-    "name": "Fresno",
-    "id": "5"
-  },
-  {
-    "name": "SAn Diego",
-    "id": "3"
   },
   {
     "name": "Denver",
     "id": "4"
   },
   {
-    "name": "Houston",
+    "name": "Miami",
     "id": "5"
   },
   {
-    "name": "Miami",
+    "name": "Houston",
+    "id": "6"
+  },
+  {
+    "name": "Dallas",
     "id": "6"
   }
 ]

@@ -113,6 +113,7 @@ const renderCurrentWeather = (currentWeather: any, cityName: string): void => {
 };
 
 const renderForecast = (forecast: any): void => {
+  console.log('forecast array: ', forecast); 
   const headingCol = document.createElement('div');
   const heading = document.createElement('h4');
 
@@ -127,7 +128,7 @@ const renderForecast = (forecast: any): void => {
 
   for (let i = 0; i < forecast.length; i++) {
     renderForecastCard(forecast[i]);
-    // i = i + 7;
+    i = i + 7;
   }
 };
 

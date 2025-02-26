@@ -139,20 +139,19 @@ class WeatherService {
     // console.log("Weather Data: ", weatherData);
     const forecasts = weatherData[0].list;
     console.log("Forecasts: ", forecasts);
-    let filterForecast = forecasts.filter((item: any) => item.dt_txt.includes('12:00:00'))
+    // let filterForecast = forecasts.filter((item: any) => item.dt_txt.includes('12:00:00'));
     // console.log("Filtered Forecasts: ", filterForecast);
     
-    const forecastArray: Weather[] = filterForecast.map((item: any) => {
+    const forecastArray: Weather[] = forecasts.map((item: any) => {
       // validate required props exist
       if (!item?.dt || !item?.main || !item?.weather || !item?.wind) {
         throw new Error('Invalid weather data');
       }
       // destructure needed props
-      
       const { main, weather, wind, dt } = item;
 
       // create new Weather object for each forecast item
-      const temp = new Weather(
+      return new Weather(
         new Date(dt * 1000).toLocaleDateString(),
         main.temp,
         main.feels_like,
@@ -164,7 +163,6 @@ class WeatherService {
         currentWeather.lat,
         currentWeather.lon
       );
-
       // return temp;
     });
     // remove 1st item & replace with current 
